@@ -1,9 +1,17 @@
 'use strict';
 
-let money = +prompt("Ваш бюджет на месяц?");
-let time = prompt("Введите дату в формате YYYY-MM-DD");
-console.log(money);
-console.log(time);
+let money,time;
+
+function start(){
+     money = +prompt("Ваш бюджет на месяц?", " ");
+     time = prompt("Введите дату в формате YYYY-MM-DD", " ");
+
+     while(isNaN(money) || money == " " || money == null){
+        money = +prompt("Ваш бюджет на месяц?", " ");
+     } // isNaN будет давать true пока в money не будет цифр;
+}
+
+start();
 
 let appData = {
     timeData : time,
@@ -11,7 +19,7 @@ let appData = {
     expenses : {},
     optionalExpenses : {},
     income : [],
-    saving : false 
+    saving : true 
 };
 
 
@@ -23,8 +31,41 @@ let appData = {
 
 
 console.log(appData.expenses);
+function Chooseexpenses(){
+    for(let i=0; i < 2; i++){
+        let a = prompt("Введите обязательную статью расходов в этом месяце"),
+        b = prompt("Во сколько обойдется?");
+        
+        if(typeof(a)==='string' && typeof(a)!= null && typeof(b)!=null && a!= ' ' && b!= ' '&& a.length < 50){
+            console.log("done");
+            appData.expenses [a] = b;
+        }else{
+            console.log("вы ввели не строку!!!");
+            i = i - 1;
+        }
+    }
+}
 
-// for(let i=0; i < 2; i++){
+Chooseexpenses();
+
+
+console.log(appData.optionalExpenses);
+function chooseOptExpenses(){
+    for (let i = 1; i < 4; i++){
+        let c = prompt ("Статья необязательных расходов?");
+        if(typeof(c)==='string' && typeof(c)!= null  && c!= ' '&& c.length < 50){
+                appData.optionalExpenses [i] = c;
+        }
+        else{
+            i = i - 1;
+        }
+    }
+}
+
+chooseOptExpenses();
+
+// let i = 0;
+// while(i < 2){
 //     let a = prompt("Введите обязательную статью расходов в этом месяце"),
 //     b = prompt("Во сколько обойдется?");
     
@@ -32,23 +73,10 @@ console.log(appData.expenses);
 //         console.log("done");
 //         appData.expenses [a] = b;
 //     }else{
-//         console.log("вы ввели не строку!!!");
-
+//         i = i - 1;
 //     }
+//     i++;
 // }
-let i = 0;
-while(i < 2){
-    let a = prompt("Введите обязательную статью расходов в этом месяце"),
-    b = prompt("Во сколько обойдется?");
-    
-    if(typeof(a)==='string' && typeof(a)!= null && typeof(b)!=null && a!= ' ' && b!= ' '&& a.length < 50){
-        console.log("done");
-        appData.expenses [a] = b;
-    }else{
-        //домашка
-    }
-    i++;
-}
 
 
 // let i = 0;
@@ -65,11 +93,17 @@ while(i < 2){
 // i++;
 // }while(i < 2)
 
+function detectDayBudget(){
+    if (appData.moneyPerDay > 0){
+        appData.moneyPerDay = (appData.moneyData/30).toFixed();
 
-appData.moneyPerDay = appData.moneyData/30;
+        alert("бабки на день " + appData.moneyPerDay);
+    }
+}
+detectDayBudget();
 
-alert("бабки на день " + appData.moneyPerDay);
 
+function detectLevel(){
 if (appData.moneyPerDay <= 100){
     console.log("мало");
 } else if (appData.moneyPerDay > 100) {
@@ -77,14 +111,18 @@ if (appData.moneyPerDay <= 100){
 } else {
     console.log("чем больше тем лучше");
 }
+}
+detectLevel();
 
+function Checksavings(){
+    if (appData.saving == true){
+        let save = +prompt("какова сума наколпений ?",""),
+            percent = +prompt("под какой процент ?");
+        
+        appData.mounthInCome = save/100/12+percent;
+        alert ("доход в месяц с вашего депозита: " + appData.mounthInCome);
+    }
+}
 
-/*
-Сколько типов данных существует в JS?
-8
-Как вывести информацию в консоль?
-console.log();
-Какая функция операторов || и &&?
-|| - или
-&& - и
-*/
+Checksavings();
+
